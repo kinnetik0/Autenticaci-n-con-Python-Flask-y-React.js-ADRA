@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
 from flask_jwt_extended import create_access_token, get_jwt_identity, get_jwt, jwt_required
-from api.models import db, User, TokenBlockedList
+from api.models import db, User, TokenBlockedList, Psicologo
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
@@ -26,7 +26,7 @@ def user_signup():
     
     encrypted_password=bcrypt.generate_password_hash(body["password"]).decode('utf-8') 
     
-    new_user = User(email=body["email"], 
+    new_user = User(email=body["email"],  
                     password=encrypted_password, is_active=True)
 
     if "first_name" in body:
@@ -43,6 +43,7 @@ def user_signup():
     db.session.commit()
 
     return jsonify({"msg":"ok"})
+
 
 @api.route('/login', methods=['POST'])
 def user_login():
@@ -68,9 +69,7 @@ def user_login():
         return jsonify({"msg": "Clave invalida"}), 401
     
     #4. Generar el token
-    role="admin"
-    if user.id %2 == 0:
-        role="user"
+    
     token = create_access_token(identity=user.id, additional_claims={"role": role})
     return jsonify({"token":token}), 200
 
@@ -82,7 +81,6 @@ def user_logout():
     db.session.add(token_blocked)
     db.session.commit()
     return jsonify({"msg": "Sesión Cerrada"})
-
 
 
 @api.route("/userinfo", methods=['GET'])
