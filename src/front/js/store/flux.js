@@ -1,3 +1,4 @@
+const apiURL=process.env.BACKEND_URL + "/api"
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -13,7 +14,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			token: null,
+			userInfo: null
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -46,6 +49,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			login: async (email, password) => {
+				let resp=await fetch(apiURL + "/Login", {
+					method:"POST",
+					body:JSON.stringify({email,password}),
+					headers: {
+						"Content-Type":"application/json"
+					}
+				})
+				if(!resp.ok){
+					setStore({token:null})
+					return false
+				}
+				let data  = await resp.json() 
+				setStore({token:data.token})
+				return true
 			}
 		}
 	};
