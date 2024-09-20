@@ -16,7 +16,7 @@ const Signup = () => {
         e.preventDefault();
         const dataToSend = { email, password };
         try {
-            const response = await fetch("https://opulent-waddle-69vgjv9wj94gcrg57-3001.app.github.dev/api/signup", {
+            const response = await fetch("https://effective-space-funicular-wvvjqxjq6r9cpxv-3000.app.github.dev/api/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
