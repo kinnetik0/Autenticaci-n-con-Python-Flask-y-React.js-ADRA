@@ -100,6 +100,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ token: null})
 				localStorage.removeItem("token")
 				return true
+			},
+			signup: async (email, password) => {
+				let resp = await fetch(apiUrl + "/signup", {
+					method: "POST",
+					body: JSON.stringify({ email, password }),
+					headers: {
+						"Content-Type": "application/json",
+					},
+				});
+				if (!resp.ok) {
+					return false;
+				}
+				let data = await resp.json();
+				return true;
 			}		
 		}
 	};

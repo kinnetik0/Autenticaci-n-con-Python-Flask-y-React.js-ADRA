@@ -6,7 +6,7 @@ import { BackendURL } from "./component/backendURL";
 import { Home } from "./pages/home";
 import { Login } from "./pages/login";
 import { Single } from "./pages/single";
-import Signup from './pages/signup';
+import { Signup } from './pages/signup';
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
